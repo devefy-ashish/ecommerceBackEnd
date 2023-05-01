@@ -1,0 +1,21 @@
+{
+  "name": "backendapp",
+  "version": "1.0.0",
+  "description": "This is backend project. In this I can create APIs for our front end ecommerce application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Ecommerce",
+    "APP"
+  ],
+  "author": "DevefyAshish",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
+  }
+}
