@@ -1,39 +1,47 @@
-const fs = require("fs");
-const data = JSON.parse(fs.readFileSync("userdata.json", "utf-8"));
-const users = data.users;
+const model = require("../model/User");
+const User = model.User;
 
-exports.createProduct = (req, res) => {
-  console.log(req.body);
-  users.push(req.body);
-  res.status(201).json(req.body);
-};
-
-exports.getAllProducts = (req, res) => {
-  res.json(users);
+/// Create a single user in database
+exports.createUser = (req, res) => {
+  const adduser = new User(req.body);
+  adduser.save().then((savedoc) => {
+    res.status(201).json(savedoc);
+  });
 };
 
-exports.getProduct = (req, res) => {
-  const id = +req.params.id;
-  const product = users.find((p) => p.id === id);
-  res.json(product);
+// GET all users from database
+exports.getAllUsers = async (req, res) => {
+  const getAllUserObject = await User.find();
+  res.status(200).json(getAllUserObject);
 };
-exports.replaceProduct = (req, res) => {
-  const id = +req.params.id;
-  const productIndex = users.findIndex((p) => p.id === id);
-  users.splice(productIndex, 1, { ...req.body, id: id });
-  res.status(201).json();
+
+// GET specific user from database using ID
+exports.getUser = async (req, res) => {
+  const id = req.params.id;
+  const getUserObject = await User.findById({ _id: id });
+  res.json(getUserObject);
 };
-exports.updateProduct = (req, res) => {
-  const id = +req.params.id;
-  const productIndex = users.findIndex((p) => p.id === id);
-  const product = users[productIndex];
-  users.splice(productIndex, 1, { ...product, ...req.body });
-  res.status(201).json();
+
+// PUT the specific data into the database using id - data may or may not delete according to supplied data
+exports.replaceUser = async (req, res) => {
+  const id = req.params.id;
+  const replaceobject = await User.findOneAndReplace({ _id: id }, req.body, {
+    new: true,
+  });
+  res.status(200).json(replaceobject);
 };
-exports.deleteProduct = (req, res) => {
-  const id = +req.params.id;
-  const productIndex = users.findIndex((p) => p.id === id);
-  const product = users[productIndex];
-  users.splice(productIndex, 1);
-  res.status(201).json(product);
+// Update the specific data into the database using id - specific data updated
+exports.updateUser = async (req, res) => {
+  const id = req.params.id;
+  const updateobject = await User.findOneAndUpdate({ _id: id }, req.body, {
+    new: true,
+  });
+  res.status(200).json(updateobject);
+};
+
+// delete user
+exports.deleteUser = async (req, res) => {
+  const id = req.params.id;
+  const delteobject = await User.findByIdAndDelete(id);
+  res.status(200).json(delteobject);
 };

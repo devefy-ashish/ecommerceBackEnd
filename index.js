@@ -19,7 +19,7 @@ async function main() {
 //bodyParser
 server.use(express.json());
 server.use("/api/products", productRouter.router);
-server.use("/api/user", userRouter.router);
+server.use("/api/users", userRouter.router);
 server.use("/api/todo", todoRouter.router);
 
 server.listen(process.env.PORT, () => {
